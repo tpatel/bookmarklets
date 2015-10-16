@@ -1,0 +1,77 @@
+<!DOCTYPE>
+<html>
+<head>
+	<meta name="charset" content="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css" rel="stylesheet" type="text/css">
+	<link href="//fonts.googleapis.com/css?family=Roboto:400,300,700" rel="stylesheet" type="text/css">
+	<style>
+		body {
+			width: 960px;
+			margin: 0 auto;
+			color: #3D3D3D;
+		}
+		html {
+			box-sizing: border-box;
+		}
+		*, *:before, *:after {
+			box-sizing: inherit;
+		}
+
+		#in {
+			width: 100%;
+			min-height: 150px;
+			margin-bottom: 30px;
+		}
+		#out {
+			width: 100%;
+			text-align: center;
+			background-color: #D3D3D3;
+			border: 1px solid #3D3D3D;
+			padding: 10px;
+		}
+	</style>
+</head>
+<body>
+	<header><h1>Convert js to bookmark</h1></header>
+
+	<main>
+		<textarea id="in"></textarea>
+		<div id="out"></div>
+	</main>
+
+	<footer></footer>
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script>
+		var updateLink = function(val) {
+			var script = encodeURIComponent(val);
+			script = 'javascript:(function(){'
+				+ script
+				+ '})();';
+			return script;
+		};
+
+		var template = function(href) {
+			$('#out').html(
+				$('<a>').attr('href', href)
+					.text('Drag me to your bookmark bar')
+			);
+		}
+
+		$('#in').keyup(function() {
+			var self = $(this);
+			var content = self.val();
+			template(updateLink(content));
+			window.location.hash = encodeURIComponent(content);
+		})
+
+		if(window.location.hash) {
+			var content = decodeURIComponent(window.location.hash.substr(1));
+			$('#in').val(content);
+			template(updateLink(content));
+		}
+	</script>
+</body>
+</html>
